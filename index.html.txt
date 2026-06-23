@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday, AYANA!</title>
+    <style>
+        /* --- CORE STYLES & THEME --- */
+        :root {
+            --rose-pink: #FF69B4;
+            --lavender-purple: #9370DB;
+            --rose-gold: #B76E79;
+            --white-glow: #FFFFFF;
+            --cinematic-dark: #0a0a0a;
+            --cinematic-bg: linear-gradient(135deg, #FFE4E1 0%, #E6E6FA 50%, #FFB6C1 100%);
+            --transition-smooth: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cinematic-dark);
+            overflow-x: hidden;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        .prevent-scroll {
+            overflow: hidden !important;
+            height: 100vh;
+        }
+
+        /* --- STAGE MANAGEMENT --- */
+        #main-stage {
+            opacity: 0;
+            transition: opacity var(--transition-smooth);
+            display: none;
+        }
+
+        /* --- SCENE 1: THE GLOWING CANDLE OPENING --- */
+        #scene-wish {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--cinematic-dark);
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .wish-text {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            animation: pulseText 2s infinite alternate;
+        }
+
+        @keyframes pulseText {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Interactive Blow Button / Candle Wrapper */
+        .candle-wrapper {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .candle {
+            width: 35px;
+            height: 120px;
+            background: linear-gradient(to right, #fff5eb, #ffd1b3);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.2);
+            position: relative;
+        }
+
+        .flame {
+            width: 18px;
+            height: 42px;
+            background: radial-gradient(ellipse at bottom, #ffda00 0%, #ff6600 60%, #ff0000 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            bottom: 108%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.6s infinite alternate, candleGlow 1.5s infinite alternate;
+            box-shadow: 0 0 25px #ffda00, 0 0 50px #ff6600, 0 0 75px #ffffff;
+            transition: all 0.4s ease-out;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) rotate(-2deg) scaleX(0.95); }
+            100% { transform: translateX(-50%) rotate(2deg) scaleY(1.05); }
+        }
+
+        @keyframes candleGlow {
+            0% { filter: drop-shadow(0 0 5px #ffda00); }
+            100% { filter: drop-shadow(0 0 20px #ff6600); }
+        }
+
+        .candle.blown-out .flame {
+            transform: translateX(-50%) scale(0);
+            opacity: 0;
+        }
+
+        .smoke {
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 40px;
+            background-color: rgba(220, 220, 220, 0.4);
+            border-radius: 50%;
+            filter: blur(5px);
+            opacity: 0;
+        }
+
+        .candle.blown-out .smoke {
+            animation: riseSmoke 1.5s ease-out forwards;
+        }
+
+        @keyframes riseSmoke {
+            0% { opacity: 0.8; transform: translateX(-50%) translateY(0) scaleX(1); }
+            100% { opacity: 0; transform: translateX(-20px) translateY(-80px) scaleX(2.5) filter: blur(8px); }
+        }
+
+        /* Countdown */
+        .countdown-container {
+            margin-top: 3rem;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #countdown-number {
+            font-size: 5rem;
+            color: var(--white-glow);
+            font-weight: 700;
+            opacity: 0;
+            text-shadow: 0 0 20px rgba(255,255,255,0.6);
+        }
+
+        #countdown-number.pop {
+            animation: popNumber 0.9s ease-out forwards;
+        }
+
+        @keyframes popNumber {
+            0% { opacity: 0; transform: scale(0.3); }
+            30% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0; transform: scale(1); }
+        }
+
+        /* --- SCENE 2: BIRTHDAY REVEAL --- */
+        #scene-reveal {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--cinematic-bg);
+            padding: 2rem;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cake-container {
+            transform: scale(0);
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cake-container.pop-up {
+            transform: scale(1);
+            animation: cakeBounce 3s infinite ease-in-out alternate;
+        }
+
+        @keyframes cakeBounce {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-15px) scale(1.02); }
+        }
+
+        /* Minimal Graphic Cake */
+        .cake {
+            width: 160px;
+            height: 120px;
+            background: linear-gradient(to bottom, #fcc5e4, var(--rose-gold));
+            border-radius: 12px 12px 0 0;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .cake::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 25px;
+            background: #fff;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 5px 5px rgba(0,0,0,0.05);
+        }
+
+        .cake-candle {
+            width: 8px;
+            height: 35px;
+            background: linear-gradient(to top, var(--lavender-purple), #e6e6fa);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .cake-flame {
+            width: 8px;
+            height: 16px;
+            background-color: #ffda00;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px #ffda00;
+        }
+
+        /* Typography */
+        .birthday-text {
+            text-align: center;
+            margin-top: 2.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s ease-out;
+        }
+
+        .birthday-text.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: #2c2c2c;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .name-title {
+            color: var(--rose-pink);
+            display: block;
+            font-size: 4.5rem;
+            margin-top: 0.5rem;
+            animation: elegantGlow 2s infinite alternate;
+        }
+
+        @keyframes elegantGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 105, 180, 0.3); }
+            100% { text-shadow: 0 0 25px rgba(255, 105, 180, 0.8), 0 0 35px rgba(255, 105, 180, 0.4); }
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: #555;
+            margin-top: 1.5rem;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Scroll Hint */
+        .scroll-invitation {
+            position: absolute;
+            bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #666;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 1s ease-out 2s;
+        }
+
+        .scroll-invitation.reveal { opacity: 1; }
+
+        .bouncing-arrow {
+            width: 14px;
+            height: 14px;
+            margin-top: 0.8rem;
+            border-right: 2px solid #555;
+            border-bottom: 2px solid #555;
+            transform: rotate(45deg);
+            animation: arrowBounce 1.5s infinite;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: rotate(45deg) translateY(0); }
+            50% { transform: rotate(45deg) translateY(8px); }
+        }
+
+        /* Canvas Overlay for Confetti Particles */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* --- SCENE 3: PHOTO SECTION --- */
+        #scene-photo {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .glass-frame {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 380px; /* Constrained for mobile portrait viewports */
+            width: 100%;
+        }
+
+        .photo-wrapper {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+            background-color: #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .premium-photo {
+            width: 100%;
+            height: auto;
+            display: block;
+            
+            /* Anti-clockwise rotation fix to layout cleanly upright */
+            transform: rotate(-90deg) scale(1);
+            
+            filter: grayscale(100%);
+            transition: filter 2.5s cubic-bezier(0.4, 0, 0.2, 1), transform 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .premium-photo.colorized {
+            filter: grayscale(0%);
+            transform: rotate(-90deg) scale(1.08);
+        }
+
+        /* --- SCENE 4: PERSONAL LETTER --- */
+        #scene-letter {
+            min-height: 100vh;
+            background: var(--cinematic-bg);
+            padding: 3rem 2rem;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .letter-container {
+            max-width: 550px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .letter-text {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #383838;
+            font-weight: 400;
+            white-space: pre-wrap; /* Maintains text generation paragraph breaks */
+        }
+
+        /* --- SCENE 5: INTERACTIVE GIFT --- */
+        #scene-gift {
+            min-height: 100vh;
+            background: #ffffff;
+            padding: 2rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gift-tag {
+            color: #777;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .gift-box-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            cursor: pointer;
+        }
+
+        .gift-box {
+            width: 100%;
+            height: 100%;
+            background-color: var(--rose-pink);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.04);
+        }
+
+        .gift-lid {
+            width: 152px;
+            height: 35px;
+            background-color: #ff94cc;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 6px 6px 0 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+
+        .gift-ribbon {
+            width: 22px;
+            height: 100%;
+            background-color: var(--rose-gold);
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Open State Modifier */
+        .gift-box-container.opened .gift-lid {
+            transform: translateX(-50%) translateY(-60px) rotate(-15deg);
+            opacity: 0;
+        }
+
+        .gift-box-container.opened .gift-box {
+            transform: scale(0.9);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        #gift-message {
+            margin-top: 4rem;
+            text-align: center;
+            line-height: 2;
+            font-size: 1.2rem;
+            color: #2c2c2c;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease-out;
+        }
+
+        #gift-message.reveal-msg {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- FINAL SCENE: STARRY SKY --- */
+        #scene-final {
+            min-height: 100vh;
+            background: radial-gradient(circle at 50% 50%, #0e1124 0%, #05060c 100%);
+            color: #e0e0e0;
+            padding: 4rem 2rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .starry-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .shooting-star {
+            position: absolute;
+            top: 20%;
+            left: -10%;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(-35deg);
+            opacity: 0;
+        }
+
+        .shooting-star.blitz {
+            animation: shoot 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes shoot {
+            0% { left: -10%; top: 20%; opacity: 1; width: 30px; }
+            100% { left: 110%; top: 60%; opacity: 0; width: 120px; }
+        }
+
+        .final-content {
+            text-align: center;
+            max-width: 500px;
+            z-index: 10;
+        }
+
+        .final-text-node {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 1.2s ease-out;
+            margin-bottom: 3.5rem;
+        }
+
+        .final-text-node.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quote-style {
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #bfa3cd;
+            font-weight: 300;
+        }
+
+        .skies-style {
+            font-size: 1.15rem;
+            line-height: 2;
+            color: #d1cbd4;
+        }
+
+        .signature-style {
+            font-size: 1.1rem;
+            color: #fff;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .signature-name {
+            color: var(--rose-pink);
+            font-weight: 600;
+        }
+
+        /* --- FLOATING BACKGROUND HEARTS --- */
+        .global-floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            font-size: 1.2rem;
+            user-select: none;
+        }
+
+        /* --- RESPONSIVE ADAPTATIONS --- */
+        @media (max-width: 600px) {
+            .main-title { font-size: 2.3rem; }
+            .name-title { font-size: 3.2rem; }
+            .tagline { font-size: 1.1rem; }
+            .letter-container { padding: 1.5rem; }
+            .letter-text { font-size: 1rem; }
+            #countdown-number { font-size: 4rem; }
+            .glass-frame { max-width: 300px; }
+        }
+    </style>
+</head>
+<body class="prevent-scroll">
+
+    <!-- THE AUDIO SOURCE LAYER -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- MAIN MOVIE STAGE -->
+    <main id="main-stage">
+
+        <!-- SCENE 1: INITIAL BLACK SCREEN & INTERACTIVE WISH CANDLE -->
+        <div id="scene-wish">
+            <div class="wish-text" id="wish-instruction">Click the candle to make a wish for AYANA ✨</div>
+            <div class="candle-wrapper" id="interactive-candle-node">
+                <div class="candle" id="main-wick">
+                    <div class="flame"></div>
+                    <div class="smoke"></div>
+                </div>
+            </div>
+            <div class="countdown-container">
+                <div id="countdown-number">5</div>
+            </div>
+        </div>
+
+        <!-- SCENE 2: CINEMATIC REVEAL EXPLOSION -->
+        <section id="scene-reveal">
+            <canvas id="confetti-canvas"></canvas>
+            
+            <div class="cake-container" id="birthday-cake-asset">
+                <div class="cake">
+                    <div class="cake-candle"><div class="cake-flame"></div></div>
+                </div>
+            </div>
+
+            <div class="birthday-text" id="reveal-typography-plate">
+                <h1 class="main-title">HAPPY BIRTHDAY <span class="name-title">AYANA</span> ❤️</h1>
+                <p class="tagline">"Miles apart, but never far away."</p>
+            </div>
+
+            <div class="scroll-invitation" id="scroll-prompt-node">
+                <span>There's something waiting below...</span>
+                <div class="bouncing-arrow"></div>
+            </div>
+        </section>
+
+        <!-- SCENE 3: GLASSMORPHISM PHOTO GALLERY -->
+        <section id="scene-photo">
+            <div class="glass-frame">
+                <div class="photo-wrapper">
+                    <img src="photo.jpg" alt="Ayana Birthday Feature" class="premium-photo" id="cinema-photo-node">
+                </div>
+            </div>
+        </section>
+
+        <!-- SCENE 4: REALISTIC TYPEWRITER LETTER -->
+        <section id="scene-letter" id="letter-trigger-zone">
+            <div class="letter-container">
+                <div id="typewriter-output" class="letter-text"></div>
+            </div>
+        </section>
+
+        <!-- SCENE 5: FINAL BURST GIFT BOX -->
+        <section id="scene-gift">
+            <div class="gift-tag">One last surprise...</div>
+            <div class="gift-box-container" id="gift-interaction-clicker">
+                <div class="gift-lid"></div>
+                <div class="gift-box">
+                    <div class="gift-ribbon"></div>
+                </div>
+            </div>
+            <div id="gift-message">
+                Different cities.<br>
+                Different skies.<br>
+                Same wish for you.<br><br>
+                <strong>Happy Birthday AYANA ❤️</strong>
+            </div>
+        </section>
+
+        <!-- SCENE 6: STARRY COSMOS SIGNATURE -->
+        <section id="scene-final">
+            <canvas id="starfield" class="starry-canvas"></canvas>
+            <div class="shooting-star" id="streak-node"></div>
+
+            <div class="final-content">
+                <div class="final-text-node quote-style" id="final-node-1">
+                    "Some people are worth missing."
+                </div>
+                <div class="final-text-node skies-style" id="final-node-2">
+                    Different cities.<br>
+                    Different skies.<br>
+                    Same wish for you.<br><br>
+                    <strong>Happy Birthday AYANA ❤️</strong>
+                </div>
+                <div class="final-text-node signature-style" id="final-node-3">
+                    With love,<br>
+                    The other irritating minion, <span class="signature-name">Devu ✌️</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- --- CORE SYSTEM ANIMATION SCRIPT --- -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Core DOM Components
+            const body = document.body;
+            const mainStage = document.getElementById('main-stage');
+            const sceneWish = document.getElementById('scene-wish');
+            const candleInteractable = document.getElementById('interactive-candle-node');
+            const wickNode = document.getElementById('main-wick');
+            const wishInstruction = document.getElementById('wish-instruction');
+            const countdownNumDisplay = document.getElementById('countdown-number');
+            const bgMusic = document.getElementById('bg-music');
+
+            // Scene 2 Components
+            const confettiCanvas = document.getElementById('confetti-canvas');
+            const cakeAsset = document.getElementById('birthday-cake-asset');
+            const typographyPlate = document.getElementById('reveal-typography-plate');
+            const scrollPrompt = document.getElementById('scroll-prompt-node');
+
+            // Scene 3 Components
+            const cinemaPhotoNode = document.getElementById('cinema-photo-node');
+
+            // Scene 4 Components
+            const typewriterOutput = document.getElementById('typewriter-output');
+
+            // Scene 5 Components
+            const giftClicker = document.getElementById('gift-interaction-clicker');
+            const giftMessagePlate = document.getElementById('gift-message');
+
+            // Final Scene Components
+            const starfieldCanvas = document.getElementById('starfield');
+            const shootingStarStreak = document.getElementById('streak-node');
+
+            // Setup states
+            let countdownTriggered = false;
+            
+            // Set song start timestamp exactly at "Hide far..." best part (~30s mark, adjust if variant varies)
+            bgMusic.currentTime = 30; 
+
+            // Initialize background configurations safely
+            mainStage.style.display = 'block';
+
+            /* --- STEP 1: INTERACTIVE CANDLE MATCHED UP TO UNBLOCK AUDIO --- */
+            candleInteractable.addEventListener('click', () => {
+                if (countdownTriggered) return;
+                countdownTriggered = true;
+
+                // Safely fire background music engine via user click interface gesture
+                bgMusic.play().catch(err => console.log("Audio contextual playback exception safely skipped:", err));
+
+                wishInstruction.innerHTML = "Keep wishing...";
+                runClockCountdown();
+            });
+
+            function runClockCountdown() {
+                let counter = 5;
+                
+                function cycle() {
+                    if (counter > 0) {
+                        countdownNumDisplay.innerText = counter;
+                        countdownNumDisplay.classList.remove('pop');
+                        void countdownNumDisplay.offsetWidth; // Trigger DOM Reflow context layout loop reset
+                        countdownNumDisplay.classList.add('pop');
+                        counter--;
+                        setTimeout(cycle, 1000);
+                    } else {
+                        // Extinguish candle safely
+                        wickNode.classList.add('blown-out');
+                        countdownNumDisplay.style.display = 'none';
+                        wishInstruction.style.opacity = '0';
+                        
+                        // Transition Stage viewscreen context forward
+                        setTimeout(() => {
+                            sceneWish.style.opacity = '0';
+                            setTimeout(() => {
+                                sceneWish.style.display = 'none';
+                                body.classList.remove('prevent-scroll');
+                                mainStage.style.opacity = '1';
+                                triggerSceneReveal();
+                            }, 1000);
+                        }, 1200);
+                    }
+                }
+                cycle();
+            }
+
+            /* --- STEP 2: REVEAL ENGINE AND CANVAS CONFETTI SYSTEM --- */
+            function triggerSceneReveal() {
+                cakeAsset.classList.add('pop-up');
+                
+                setTimeout(() => {
+                    typographyPlate.classList.add('reveal');
+                    scrollPrompt.classList.add('reveal');
+                    renderGlobalFloatingHeartsSystem();
+                }, 1200);
+
+                initializeConfettiExplosion();
+            }
+
+            function initializeConfettiExplosion() {
+                const ctx = confettiCanvas.getContext('2d');
+                let width = confettiCanvas.width = window.innerWidth;
+                let height = confettiCanvas.height = window.innerHeight;
+
+                window.addEventListener('resize', () => {
+                    width = confettiCanvas.width = window.innerWidth;
+                    height = confettiCanvas.height = window.innerHeight;
+                });
+
+                const colors = ['#FF69B4', '#9370DB', '#B76E79', '#FFFFFF', '#FFB6C1'];
+                const particles = [];
+
+                for (let i = 0; i < 110; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * -height - 20,
+                        r: Math.random() * 6 + 4,
+                        d: Math.random() * colors.length,
+                        vectorX: Math.random() * 4 - 2,
+                        vectorY: Math.random() * 5 + 4,
+                        tilt: Math.random() * 10 - 5
+                    });
+                }
+
+                function renderLoop() {
+                    ctx.clearRect(0, 0, width, height);
+                    let ongoingAnimation = false;
+
+                    particles.forEach((p) => {
+                        p.y += p.vectorY;
+                        p.x += p.vectorX;
+                        p.tilt += 0.1;
+
+                        if (p.y < height) ongoingAnimation = true;
+
+                        ctx.beginPath();
+                        ctx.lineWidth = p.r;
+                        ctx.strokeStyle = colors[Math.floor(p.d)];
+                        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                        ctx.stroke();
+                    });
+
+                    if (ongoingAnimation) {
+                        requestAnimationFrame(renderLoop);
+                    } else {
+                        ctx.clearRect(0, 0, width, height);
+                    }
+                }
+                requestAnimationFrame(renderLoop);
+            }
+
+            /* --- STEP 3: PHOTO INTERSECTION CONTROLLER --- */
+            const photoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        cinemaPhotoNode.classList.add('colorized');
+                    }
+                });
+            }, { threshold: 0.4 });
+
+            photoObserver.observe(document.getElementById('scene-photo'));
+
+            /* --- STEP 4: TYPEWRITER TEXT LOGIC (FIXED SPACES) --- */
+            const letterTextContent = "Dear Ayana,\n\nToday is a reminder that the world became brighter because you were born.\n\nEven though we're miles apart now, some people never truly feel distant.\n\nThe memories we made, the laughter we shared, and the friendship we built continue to stay close no matter where life takes us.\n\nI may not be there beside you today, but I am still celebrating you from afar.\n\nThank you for being such an important part of my life.\n\nI hope this year brings you endless happiness, beautiful moments, and dreams that come true.\n\nHappy Birthday, Ayana ❤️";
+
+            let letterTriggered = false;
+            const letterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !letterTriggered) {
+                        letterTriggered = true;
+                        executeCinemaTypewriter(typewriterOutput, letterTextContent, 45);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            letterObserver.observe(document.getElementById('scene-letter'));
+
+            function executeCinemaTypewriter(targetElement, fullText, speedDelay) {
+                let currentIdx = 0;
+                
+                function typeNode() {
+                    if (currentIdx < fullText.length) {
+                        // Use textContent directly to safely retain raw text spaces and newlines natively
+                        targetElement.textContent += fullText.charAt(currentIdx);
+                        currentIdx++;
+                        setTimeout(typeNode, speedDelay);
+                    }
+                }
+                typeNode();
+            }
+
+            /* --- STEP 5: INTERACTIVE SURPRISE GIFT BURST --- */
+            let giftOpened = false;
+            giftClicker.addEventListener('click', () => {
+                if (giftOpened) return;
+                giftOpened = true;
+                
+                giftClicker.classList.add('opened');
+                giftMessagePlate.classList.add('reveal-msg');
+                triggerBurstExplosionHearts();
+            });
+
+            function triggerBurstExplosionHearts() {
+                for(let i=0; i<15; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'global-floating-heart';
+                    heart.innerHTML = Math.random() > 0.5 ? '❤️' : '✨';
+                    heart.style.left = '50vw';
+                    heart.style.top = '50vh';
+                    heart.style.opacity = '1';
+                    
+                    document.body.appendChild(heart);
+
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * 120 + 60;
+                    const destX = Math.cos(angle) * velocity;
+                    const destY = Math.sin(angle) * velocity - 100; // Force upward movement bias
+
+                    heart.animate([
+                        { transform: 'translate(-50%, -50%) scale(0.5)', opacity: 1 },
+                        { transform: `translate(calc(-50% + ${destX}px), calc(-50% + ${destY}px)) scale(1.3)`, opacity: 0 }
+                    ], {
+                        duration: 1200,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+                        fill: 'forwards'
+                    });
+
+                    setTimeout(() => heart.remove(), 1200);
+                }
+            }
+
+            /* --- STEP 6: STARRY COSMOS SKY ENGINE --- */
+            function initStarfieldSky() {
+                const ctx = starfieldCanvas.getContext('2d');
+                let w = starfieldCanvas.width = window.innerWidth;
+                let h = starfieldCanvas.height = window.innerHeight;
+
+                const starNodes = [];
+                for(let i=0; i<65; i++) {
+                    starNodes.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        size: Math.random() * 1.5 + 0.5,
+                        opacity: Math.random(),
+                        speed: Math.random() * 0.02 + 0.005
+                    });
+                }
+
+                function starLoop() {
+                    ctx.clearRect(0,0,w,h);
+                    starNodes.forEach(s => {
+                        s.opacity += s.speed;
+                        if(s.opacity > 1 || s.opacity < 0) s.speed = -s.speed;
+                        ctx.fillStyle = `rgba(255,255,255,${Math.abs(s.opacity)})`;
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                        ctx.fill();
+                    });
+                    requestAnimationFrame(starLoop);
+                }
+                requestAnimationFrame(starLoop);
+            }
+            initStarfieldSky();
+
+            // Final Plate Content Scroll Triggers
+            const finalNodes = [
+                document.getElementById('final-node-1'),
+                document.getElementById('final-node-2'),
+                document.getElementById('final-node-3')
+            ];
+
+            const finalObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        if (entry.target.id === 'final-node-1') {
+                            setTimeout(() => {
+                                shootingStarStreak.classList.add('blitz');
+                            }, 400);
+                        }
+                    }
+                });
+            }, { threshold: 0.6 });
+
+            finalNodes.forEach(node => finalObserver.observe(node));
+
+            /* --- STEP 7: PERFORMANT BACKGROUND FLOATING HEARTS LOOP --- */
+            function renderGlobalFloatingHeartsSystem() {
+                setInterval(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'global-floating-heart';
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 90 + 5 + 'vw';
+                    heart.style.top = '105vh';
+                    heart.style.opacity = Math.random() * 0.25 + 0.1;
+                    heart.style.fontSize = Math.random() * 1.2 + 0.8 + 'rem';
+                    
+                    body.appendChild(heart);
+
+                    heart.animate([
+                        { transform: 'translateY(0) scale(0.8)', opacity: heart.style.opacity },
+                        { transform: `translateY(-115vh) translateX(${Math.random() * 60 - 30}px) scale(1.1)`, opacity: 0 }
+                    ], {
+                        duration: Math.random() * 3000 + 5000,
+                        easing: 'linear'
+                    });
+
+                    setTimeout(() => heart.remove(), 8000);
+                }, 750);
+            }
+        });
+    </script>
+</body>
+</html>
